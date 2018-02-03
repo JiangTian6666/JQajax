@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>jquery-load</title>
+	<style>
+		*{
+			padding: 0;
+			margin: 0;
+		}
+		a{
+			text-decoration: none;
+		}
+		li{
+			list-style: none;
+		}
+		#box{
+			width: 800px;
+			margin: 0 auto;
+		}
+		#box>li{
+			padding: 10px;
+			border: 1px solid red;
+			color: #666;
+			margin: 10px;
+		}
+	</style>
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script></head>
+<body>
+	<ul id="box"></ul>
+	<a href="#" id="btn">点击我</a>
+	<script>
+		var pageIndex = 1;
+		var len = 5;
+		var lock = false;
+		var $btn = $("#btn");
+		var $box = $("#box");
+		$btn.on("click",getNews)
+		function getNews(e){
+			e.preventDefault();
+			if (lock) {
+				return ;
+			}
+			lock = true;
+			$.ajax({
+				url: "getNews",
+				method: "get",
+				data: {
+					pageIndex: pageIndex,
+					len: len
+				}}).done(function(strArr){
+					lock = false;
+					pageIndex+=len; 
+					loadPage(strArr);
+				}).fail(function(jqXHR, textStatus){
+
+    				console.log(textStatus);
+
+ 				});
+		}
+		function loadPage(strArr){
+			var arr = JSON.parse(strArr);
+			for (var i = 0; i < arr.length; i++) {
+				$("#box").append("<li>"+arr[i]+"</li>");
+			}
+		}
+	</script>
+</body>
+</html>
