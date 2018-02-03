@@ -18,7 +18,6 @@ function staticRoot(staticaPath,req,res) {
     case "/getNews":
        var index = pathObj.query.pageIndex;
              var len = pathObj.query.len;
-             console.log(pathObj.query.index+":"+len)
              var arr = [];
              for (var i = 0; i < len; i++) {
                arr.push("新闻"+(parseInt(index)+i))
